@@ -1,0 +1,26 @@
+@startuml
+    title https://github.com/plantuml/plantuml-stdlib?tab=readme-ov-file#k8s-k8s
+    !include <k8s/Common>
+    !include <k8s/Simplified>
+    !include <k8s/OSS/all>
+    footer Kubernetes Plant-UML
+    scale max 1024 width
+    skinparam {
+        nodesep 10
+        ranksep 10
+    }
+    actor "User" as userAlias
+    left to right direction
+    Cluster_Boundary(cluster, "Kubernetes Cluster") {
+        Namespace_Boundary(ns, "Web") {
+            KubernetesSvc(svc, "service", "")
+            KubernetesPod(pod1, "web-pod1", "")
+            KubernetesPod(pod2, "web-pod2", "")
+        }
+    }
+    Rel(userAlias,svc,"get HTTP/1.1 index.html", "1")
+    Rel(svc,pod1,"load Balances to Pods", "2")
+    Rel(svc,pod2,"load Balances to Pods", "2")
+    Rel_U(pod1, svc, "serves content", "3")
+    Rel(svc, userAlias, "return content to", "4")
+@enduml
