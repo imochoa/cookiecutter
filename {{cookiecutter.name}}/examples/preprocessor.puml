@@ -1,0 +1,20 @@
+@startuml
+
+' https://plantuml.com/preprocessing
+
+' 3 types of vars
+!$a  = 42
+!$ab = "foo1"
+!$cd = "foo2"
+!$ef = $ab + $cd
+!$foo = { "name": "John", "age" : 30 }
+
+' If the variable is not defined, assign a default value
+!$var ?= "World"
+
+!function $double($a)
+!return $a + $a
+!endfunction
+
+Alice -> Bob : The double of 3 is $double(3)
+@enduml
