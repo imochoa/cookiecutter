@@ -1,0 +1,44 @@
+@startuml
+' !include style.puml
+' !include_once https://raw.githubusercontent.com/imochoa/dotfiles/master/dotfiles/plantuml/plantuml_style.iuml
+
+!include ../spanlib.iuml
+
+left to right direction
+
+
+' ---- inputs
+$pdf("technical drawing", "PDF_IN")
+
+rectangle "CAD Pipeline" #$cad_pline_rgb{
+' $json("feature extraction", "JSON_FEXT")
+$fext("feature extraction", "JSON_FEXT")
+}
+
+rectangle "PDF Pipeline" #$pdf_pline_rgb{
+
+$fcn("extraction", "FCN_EXTRACT")
+$fcn("merging", "FCN_MERGE")
+
+$json("extracted", "JSON_EXTRACTED")
+$json("merged", "JSON_MERGED")
+}
+
+
+' outputs
+' $json("order info", "JSON_OI")
+$oi("order info", "JSON_OI")
+
+' CONNECTIONS
+' !$stp_rgb = "#Purple"
+' !$fext_rgb = "#Orange"
+' !$cache_rgb = "#LightGray"
+
+PDF_IN --> FCN_EXTRACT
+FCN_EXTRACT --> JSON_EXTRACTED
+JSON_EXTRACTED --> FCN_MERGE
+JSON_FEXT -[#$fext_rgb]> FCN_MERGE
+FCN_MERGE --> JSON_MERGED
+!$opt_oi = "gray"
+JSON_MERGED .[#$opt_oi].> JSON_OI : <color:$opt_oi>Helps generate</color>
+@enduml

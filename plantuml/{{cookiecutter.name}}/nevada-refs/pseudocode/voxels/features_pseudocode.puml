@@ -1,0 +1,45 @@
+@startuml
+!include ../../spanlib.iuml
+
+' -----------------------------------------------------
+state "Voxel Features" as TOPLEVEL {
+' TODO
+state "Parse inputs" as INPUT_PARSING
+state "Check rerun" as CACHE_CHECK
+state "Prepare features" as OC1
+state "Rebuild bores in voxel space" as F1
+state "Rebuild turned grooves in voxel space" as F2
+state "Rebuild special slots in voxel space" as F3
+state "Export results" as EXIT
+
+state WAS_CACHED <<end>> #magenta
+
+INPUT_PARSING : Read feature extraction
+
+' OC1 : Slice the part
+' OC1 : Calculate the bending inertias per slice
+
+' NOC1 : Recover the bending inertias
+
+' OK Connections
+[*] --> INPUT_PARSING
+INPUT_PARSING --> CACHE_CHECK
+CACHE_CHECK --> OC1
+' CACHE_CHECK --> NOC1
+
+
+OC1 --> F1
+F1 --> F2
+F2 --> F3
+' NOC1 --> CASTIGLIANO
+
+F3 --> EXIT
+
+' Exit Connections
+CACHE_CHECK -> WAS_CACHED : known answer
+
+EXIT --> [*] : OK
+
+}
+
+@enduml

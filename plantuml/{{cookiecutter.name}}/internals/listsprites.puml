@@ -1,0 +1,5 @@
+@startuml
+' Use with the full path:
+' <$archimate/material>
+listsprites
+@enduml

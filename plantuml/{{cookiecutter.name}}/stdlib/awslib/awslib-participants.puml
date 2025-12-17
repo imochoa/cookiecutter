@@ -1,0 +1,31 @@
+@startuml
+
+' https://github.com/plantuml/plantuml-stdlib/tree/master/stdlib/awslib20
+!include <awslib/AWSCommon>
+!include_once <awslib/ManagementGovernance/all.puml>
+
+actor User
+participant System
+participant Database
+
+OrganizationsParticipant("admin","Admin","s")
+
+User -> System: submit registration
+activate System
+System -> Database: validate details
+activate Database
+Database --> System: validation result
+deactivate Database
+alt valid details
+    System -> Database: create account
+    activate Database
+    Database --> System: account created
+    deactivate Database
+    System --> User: send confirmation
+else invalid details
+    System --> User: send error
+end
+deactivate System
+@enduml
+@enduml
+

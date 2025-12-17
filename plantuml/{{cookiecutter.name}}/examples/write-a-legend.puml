@@ -1,0 +1,32 @@
+@startmindmap
+
+* RootNode
+
+
+' set legend to have a white background
+skinparam legendBackgroundColor #FFFFFF
+' remove box around legend
+skinparam legendBorderColor #FFFFFF
+' remove the lines between the legend items
+skinparam legendEntrySeparator #FFFFFF
+
+' skinparam legend {
+'   backgroundColor #GhostWhite
+'   entrySeparator #GhostWhite
+' }
+
+
+legend right
+    '   the <#FFFFFF,#FFFFFF> sets the background color of the legend to white
+    <#FFFFFF,#FFFFFF>|        |= __Legend Title__ |
+    |<#red>| Type A Classes|
+    ' the space between the | and <#blue> is important to make the color column wider
+    |<#blue>     | Type B Classes|
+    |<#green>| Type C Classes|
+endlegend
+
+' References
+' https://stackoverflow.com/questions/30999290/how-to-generate-a-legend-with-colors-in-plantuml
+' https://plantuml-documentation.readthedocs.io/en/latest/formatting/all-skin-params.html
+' https://plantuml.com/creole#51c45b795d5d18a3
+@endmindmap

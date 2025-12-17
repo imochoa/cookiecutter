@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "../.."
+		},
+		{
+			"path": "../../../platform"
+		},
+		{
+			"path": "../../../plantuml-stdlib"
+		},
+		{
+			"path": "../../../aws-icons-for-plantuml"
+		}
+	],
+	"settings": {}
+}

@@ -1,0 +1,22 @@
+@startmindmap git
+* git
+** git grep
+*** git grep "<str>"
+****_ search for <str> in working directory
+*** git grep "<str>" $(git rev-list --all)
+****_ search for <str> in all commits
+*** git grep "<str>" origin/main
+****_ search for <str> in a branch
+** git log
+***_ --oneline
+*** git log -p -G <pattern>
+****_ search for **commits** that introduced <pattern>
+*** git log -S <str>
+****_ search for **commits** that added or removed <str>
+*** git log --grep="<pattern>"
+****_ search *commit messages* for a pattern
+@endmindmap
+
+@startmindmap hoho
+* meow
+@endmindmap

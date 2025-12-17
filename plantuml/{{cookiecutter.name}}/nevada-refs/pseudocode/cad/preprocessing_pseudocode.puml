@@ -1,0 +1,115 @@
+@startuml
+!include ../../spanlib.iuml
+
+' scale 450 width
+
+
+
+' state "Failed" as FAIL
+' state "Export preprocessed file" as SUCCESS
+
+[*] -> V_STATE
+
+' -----------------------------------------------------
+state "CAD checks" as V_STATE {
+' Inner states
+state "Loading check" as LOADING
+state "Mesh check" as MESH
+state "Cavity check" as CAVITY
+state "Topology check" as TOPO
+
+state BAD_LOAD <<end>> #magenta
+state BAD_MESH <<end>> #magenta
+state BAD_CAVITY <<end>> #magenta
+state BAD_TOPO <<end>> #magenta
+' end BAD_MESH #Red
+
+' Correct
+[*] --> LOADING
+LOADING --> MESH : OK
+MESH --> CAVITY : OK
+CAVITY --> TOPO : OK
+TOPO --> [*] : OK
+
+
+LOADING -> BAD_LOAD : Failed to load!
+MESH -> BAD_MESH : was a mesh!
+CAVITY -> BAD_CAVITY: was hollow!
+TOPO -> BAD_TOPO : Incorrect number of\nsolids or surfaces!
+'Fails
+' LOADING --> [*]: Failed
+' MESH --> [*]: Failed
+' CAVITY --> [*]: Failed
+' TOPO --> [*]: Failed
+
+}
+
+' -----------------------------------------------------
+V_STATE -> R_STATE: Successful
+state INVALID <<end>> #magenta
+V_STATE --> INVALID: Failed
+' V_STATE -> FAIL: Failed
+state "Repositioning" as R_STATE {
+
+state "Find better orientation?" as REORIENT {
+state "Better axis?" as AXIS_REORIENT
+
+state FORK_REORIENT   <<fork>>
+
+[*] --> FORK_REORIENT
+
+  FORK_REORIENT --> AXIS_REORIENT
+  AXIS_REORIENT --> [*]
+
+state "Better basis?" as GENERAL_REORIENT
+  FORK_REORIENT --> GENERAL_REORIENT
+  GENERAL_REORIENT --> [*]
+
+}
+state "Translate center of mass\nto origin (0,0,0)" as CENTER
+
+[*] --> REORIENT
+REORIENT --> CENTER
+CENTER --> [*]
+
+}
+' -----------------------------------------------------
+
+R_STATE -> E_STATE: Successful
+' R_STATE -> FAIL: Failed
+state "Exporting" as E_STATE {
+' Inner states
+state "Clean up metadata" as CLEAN
+state "Export preprocessed file" as EXPORT
+
+[*] --> CLEAN
+CLEAN --> EXPORT
+EXPORT --> [*]
+}
+
+' E_STATE --> SUCCESS
+E_STATE -> [*]: Successful
+' E_STATE -> FAIL: Failed
+
+' state NotShooting {
+'   [*] --> Idle
+'   Idle --> Configuring : EvConfig
+'   Configuring --> Idle : EvConfig
+' }
+
+' state Configuring {
+'   [*] --> NewValueSelection
+'   NewValueSelection --> NewValuePreview : EvNewValue
+'   NewValuePreview --> NewValueSelection : EvNewValueRejected
+'   NewValuePreview --> NewValueSelection : EvNewValueSaved
+
+'   state NewValuePreview {
+'      State1 -> State2
+'   }
+
+' }
+
+
+' FAIL --> [*]
+' SUCCESS --> [*]
+@enduml

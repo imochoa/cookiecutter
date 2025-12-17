@@ -1,0 +1,78 @@
+@startuml
+!include ../../spanlib.iuml
+
+' -----------------------------------------------------
+state "Voxel Clamping" as TOPLEVEL {
+' Inner states
+state "Get always accessible voxels" as AAV
+state "Get directional accessible voxels" as DAV
+state "Get coplanar accessible voxels" as CAV
+state "Is it a pure milling part?" as DPM
+state "Yes" as PM
+state "Define clamping category" as MCC
+state "Compute clamping penalty" as MCP
+state "No" as PTMT
+state "Compute turning accessible" as CTAM
+state "Compute turning clamping accessibility" as TCC
+state "Is it a mill turning part?" as DPT
+state "Yes" as MT
+state "Set category and penalty" as PTCCP
+state "No" as PT
+state "Set category and penalty" as MTCCP
+state "Convert the clamping penalty" as CCP
+state "Save the outputs" as EXIT
+
+PM: pure milling
+PTMT: pure turning
+PTMT: mill-turning
+
+' Pure milling
+MCC: Combine accessibility maps
+MCP: Find clamping faces (plane or cylindrical)
+
+' Some turning
+CTAM: Combine non-turning axis directions
+TCC: Find necessary axial directions
+MT: mill-turning
+PT: pure turning
+PTCCP: Define pure turning clamping category and penalty
+MTCCP: Define mill-turning clamping category and penalty
+
+' Connections
+[*] --> AAV
+AAV --> DAV
+DAV --> CAV
+CAV --> DPM
+
+' Pure milling decision
+DPM --> PM
+DPM --> PTMT
+
+' Pure milling path
+PM --> MCC
+MCC --> MCP
+MCP --> CCP
+
+' Turning present path
+PTMT --> CTAM
+CTAM --> TCC
+TCC --> DPT
+
+'Pure turning/ Mill-turning decision
+DPT --> PT
+DPT --> MT
+
+'Pure turning
+PT --> PTCCP
+PTCCP --> CCP
+'Mill turning
+MT --> MTCCP
+MTCCP --> CCP
+
+'exit
+CCP --> EXIT
+EXIT --> [*]
+
+}
+
+@enduml

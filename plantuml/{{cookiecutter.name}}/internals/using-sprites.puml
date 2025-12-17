@@ -1,0 +1,10 @@
+@startuml
+' listsprites
+(First <:1f408:> usecase <#0:1f408:> <#red:1f408:>  )
+("Another <&bell,scale=2>") as (UC2)
+usecase UC3
+usecase (Last\n<$archimate/material,scale=3.4,color=orange>) as UC4
+
+
+
+@enduml

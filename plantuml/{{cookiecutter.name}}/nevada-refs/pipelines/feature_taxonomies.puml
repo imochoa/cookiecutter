@@ -1,0 +1,91 @@
+@startmindmap
+!include_once ../spanlib.iuml
+
+' <style>
+' node {
+'     Padding 12
+'     Margin 3
+'     HorizontalAlignment center
+'     LineColor blue
+'     LineThickness 3.0
+'     BackgroundColor gold
+'     RoundCorner 40
+'     MaximumWidth 100
+' }
+
+' rootNode {
+'     LineStyle 8.0;3.0
+'     LineColor red
+'     BackgroundColor white
+'     LineThickness 1.0
+'     RoundCorner 0
+'     Shadowing 0.0
+' }
+
+' leafNode {
+'     LineColor gold
+'     RoundCorner 0
+'     Padding 3
+' }
+
+' arrow {
+'     LineStyle 4
+'     LineThickness 0.5
+'     LineColor green
+' }
+' </style>
+
+<style>
+node {
+    Padding 10
+    Margin 10
+    HorizontalAlignment center
+    LineColor black
+    LineThickness 1.0
+    RoundCorner 20
+    MaximumWidth 150
+}
+
+arrow {
+    ' LineStyle 12
+    LineThickness 1.5
+    LineColor Black
+}
+</style>
+
+
+*[#White] Machining\nfeatures
+ *[#LimeGreen] **Milled**
+  *_ Pockets
+   *_ Basic pockets
+   *_ Hexagonal pockets
+  *_ Slots
+   *_ Basic slots
+   *_ T-Slots
+   *_ Dovetail Slots
+   *_ Keyway Slots
+'   *_ Steps
+  *_ Engravings
+  *_ Knurl
+  *_ Transition features
+   *_ Chamfers
+   *_ Fillets
+ *[#MediumTurquoise] **Milled OR Turned**
+  *_ Boring
+   *_ Bores
+   *_ pilot bores
+   *_ Counterbores/sinks
+   *_ Inner threads
+  *_ Outer threads
+ *[#LightSkyBlue] **Turned**
+  *_ Turned Grooves\n(inner & outer)
+   *_ Radial turned grooves
+   *_ Axial turned grooves
+   *_ Undercuts
+ *[#Orange] **Other**
+  *_ Gears
+  *_ Extrusion
+  *_ Sheet metal bending
+  *_ ...
+@endmindmap
+

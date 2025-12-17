@@ -1,0 +1,89 @@
+@startgantt
+
+title Phase 1 Timeline
+
+' Closed days
+' Weekends
+saturday are closed
+sunday are closed
+
+' (Christi Himmelfahrt)
+2021-05-13 is closed
+' (Pfingstmontag)
+2021-05-24 is closed
+
+' (Pfingstferien)
+2021-06-03 is closed
+
+' (Maria Himmelfahrt)
+2021-08-15 is closed
+
+
+' Style
+' printscale weekly
+hide footbox
+' skinparam defaultFontName Aapex
+<style>
+ganttDiagram {
+    task {
+'         FontName Helvetica
+'         FontColor red
+'         FontSize 18
+'         FontStyle bold
+          BackGroundColor LightGreen
+'         LineColor yellow
+    }
+    milestone {
+'         FontColor blue
+'         FontSize 25
+'         FontStyle italic
+'         BackGroundColor yellow
+'         LineColor red
+    }
+}
+</style>
+
+
+Project starts 2021-04-04
+[Previous Target] happens 2021-05-31
+[Documentation Proposal] happens 2021-06-15
+' [Phase 1 Reviewed V1.0] happens 2021-07-13
+[Documenatation v1.0 Finished] happens 2021-07-5
+[Phase 1 Official Due Date] happens 2021-08-8
+' [Phase 1 Vacation] happens 2021-07-17
+
+[Summer Break:Ignacio] starts 2021-07-17
+[Summer Break:Ignacio] ends 2021-08-01
+
+[CAD Pipeline] as [C1] lasts 10 days 
+then [Voxel Pipeline] as [C2] lasts 15 days
+then [Pricing Pipeline] as [C3] lasts 17 days
+then [Rest of PDF Pipeline] as [C4] lasts 7 days
+then [Request Changes] as [C6] lasts 7 days
+then [Implement Changes] as [C7] lasts 7 days
+
+' then [Voxel Pipeline] as [C2] lasts 15 days
+
+' [Prototype design] -[dotted]-> [Prepare test]
+[PDF Primer] as [C5] lasts 5 days
+[C1] --> [C5]
+
+[C1] is 100% completed
+[C2] is 100% completed
+[C3] is 80% completed
+[C4] is 100% completed
+[C5] is 100% completed
+[C6] is 20% completed
+[C7] is 20% completed
+
+' center footer (<&star>) Planning suggestions
+
+' [C2] starts at [C1]'s end
+' [C3] starts at [C2]'s end
+' [C4] starts at [C3]'s end
+
+
+' [Prototype design] lasts 14 days
+' then [Test prototype] lasts 4 days
+' then [Deploy prototype] lasts 6 days
+@endgantt

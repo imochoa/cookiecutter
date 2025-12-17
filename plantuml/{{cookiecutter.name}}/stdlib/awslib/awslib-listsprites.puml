@@ -1,0 +1,14 @@
+@startuml Hello World
+' Uncomment the line below for "dark mode" styling
+'!$AWS_DARK = true
+
+' https://github.com/awslabs/aws-icons-for-plantuml/blob/main/source/AWSCommon.puml
+!include <awslib/AWSCommon>
+
+' Splits at the ~ character and iterates over each item
+!foreach $item in %splitstr('General~SecurityIdentityCompliance~NetworkingContentDelivery~DeveloperTools~Database~Storage~ApplicationIntegration~Compute~Groups~MediaServices~MachineLearning', '~')
+    !include <awslib/$item/all.puml>
+!endfor
+
+listsprites
+@enduml

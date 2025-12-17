@@ -1,0 +1,79 @@
+@startuml
+' !include style.puml
+' !include_once https://raw.githubusercontent.com/imochoa/dotfiles/master/dotfiles/plantuml/plantuml_style.iuml
+
+' !include_once spanlib.iuml
+!include ../spanlib.iuml
+
+left to right direction
+
+skinparam linetype polyline
+
+' skinparam linetype ortho
+' skinparam linetype spline
+
+' ' PROCEDURES
+' !procedure $json($txt, $name)
+' file "$txt" <<JSON>> as $name #LightGreen
+' !endprocedure
+
+' !procedure $step($txt, $name)
+' file "$txt" <<STEP>> as $name #LightGray
+' !endprocedure
+
+' !procedure $npz($txt, $name)
+' file "$txt" <<NPZ>> as $name #Linen
+' !endprocedure
+
+' !procedure $fcn($txt, $name)
+' node "$txt" as $name #LightSalmon
+' !endprocedure
+
+
+' DEFINITIONS
+
+' ---- inputs
+' together {
+' $json("order info", "JSON_OI")
+$oi("order info", "JSON_OI")
+$json("config", "JSON_CONFIG")
+' }
+
+
+rectangle "CAD Pipeline" #$cad_pline_rgb{
+$fext("feature extraction", "JSON_FEXT")
+}
+
+
+' ---- machinability
+rectangle "Voxel Pipeline" #$vox_pline_rgb {
+
+$json("machinability", "JSON_MACH")
+}
+
+' ---- bpricing
+rectangle "Pricing Pipeline" #$price_pline_rgb  {
+$fcn("basic pricing", "FCN_BP")
+$json("basic pricing", "JSON_BP")
+
+' ---- fpricing
+$fcn("final pricing", "FCN_FP")
+$json("final pricing", "JSON_FP")
+}
+
+
+' ---- bpricing
+JSON_FEXT -[$fext_style]-> FCN_BP
+JSON_OI -[$oi_style]-> FCN_BP
+JSON_CONFIG .[dashed].> FCN_BP: "optional"
+FCN_BP --> JSON_BP
+
+' ---- fpricing
+JSON_FEXT -[$fext_style]-> FCN_FP
+JSON_BP --> FCN_FP
+JSON_CONFIG ..> FCN_FP: "optional"
+JSON_MACH --> FCN_FP
+FCN_FP --> JSON_FP
+
+
+@enduml

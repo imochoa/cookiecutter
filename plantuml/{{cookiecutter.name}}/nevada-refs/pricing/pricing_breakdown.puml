@@ -1,0 +1,261 @@
+@startmindmap
+!include_once ../spanlib.iuml
+
+' <style>
+' node {
+'     Padding 12
+'     Margin 3
+'     HorizontalAlignment center
+'     LineColor blue
+'     LineThickness 3.0
+'     BackgroundColor gold
+'     RoundCorner 40
+'     MaximumWidth 100
+' }
+
+' rootNode {
+'     LineStyle 8.0;3.0
+'     LineColor red
+'     BackgroundColor white
+'     LineThickness 1.0
+'     RoundCorner 0
+'     Shadowing 0.0
+' }
+
+' leafNode {
+'     LineColor gold
+'     RoundCorner 0
+'     Padding 3
+' }
+
+' arrow {
+'     LineStyle 4
+'     LineThickness 0.5
+'     LineColor green
+' }
+' </style>
+
+<style>
+node {
+    Padding 10
+    Margin 10
+    HorizontalAlignment center
+    LineColor black
+    LineThickness 1.0
+    RoundCorner 20
+    MaximumWidth 150
+    node {
+        BackgroundColor White
+    }
+}
+
+arrow {
+    ' LineStyle 12
+    LineThickness 1.5
+    LineColor Black
+}
+</style>
+'!$cad_pline_rgb = "PaleGreen"
+'!$vox_pline_rgb = "PaleTurquoise"
+!$b_price_pline_rgb = "lavender"
+!$f_price_pline_rgb = "bisque"
+!$pricing_constants = "PaleGreen"
+!$order_info = "aquamarine"
+!$various_pos = "lightcyan"
+' Algorithm = Calculation Pipeline + PDF Pipeline
+' Calculation Pipeline = 3D Pipeline + Pricing Pipeline
+' 3D Pipeline = CAD Pipeline + Voxel Pipeline
+
+' Color
+' *[#Red] stock_cost
+
+' Reverse it?
+'   left side
+
+* net_cost
+ * stock_cost
+  * material_cost*
+'   * base_stock_cost
+   * base_stock_cost_pp*
+    *[#$pricing_constants] stock.price_per_kg
+    * stock_mass_pp
+     *[#$b_price_pline_rgb] stock.volume
+     *[#$pricing_constants] material.density
+'    * chosen_stock_cost_tuning_factor
+   *[#$order_info] quantity
+'   * stock_cost_factor
+  * stock_sawing_cost
+   * stock_sawing_cost_pp
+    * stock_sawing_time_pp
+     *[#$b_price_pline_rgb] stock.eq_sawed_area
+     *[#$b_price_pline_rgb] stock.sawing_surface_rate
+    *[#$pricing_constants] stock.sawing_hour_rate
+   *[#$order_info] quantity
+ * manufacturing_cost
+  * base_manufacturing_cost
+   * machining_cost
+    * machining_cost_pp*
+'     * base_machining_cost_pp
+     * manufacturing.machining_time_pp*
+'      * base_machining_time_pp
+      *[#$f_price_pline_rgb] workpiece_changing_time_pp
+      * tool_changing_time_pp
+       *[#$f_price_pline_rgb] time_it_takes_to_change_a_tool
+       *[#$various_pos] num_of_tools
+      * finish_machining_time_pp
+       * finish_machining_time_post_offset
+        * fittings_finishing_time_pp
+         *[#$b_price_pline_rgb] finishing_fittings_offset_area
+         *[#$f_price_pline_rgb] effective_surface_finish_rate
+        * threads_finishing_time_pp
+         *[#$b_price_pline_rgb] finishing_threads_offset_area
+         *[#$f_price_pline_rgb] effective_surface_finish_rate
+       * base_finish_machining_time_pp
+       * unfinished_faces_finishing_time_pp
+        *[#$f_price_pline_rgb] finishing_unfinished_offset_area
+        *[#$f_price_pline_rgb] effective_surface_finish_rate
+       * finish_machining_time_factor
+        *[#$b_price_pline_rgb] finishing_tol_multiplier
+        *[#$f_price_pline_rgb] finishing_complexity_factor
+      * rough_machining_time_pp
+       * rough_milling_time_pp
+       'base_rough_mach_time_pp set to 0 in the final pricing
+        *[#$f_price_pline_rgb] base_rough_mach_time_pp
+        *[#$b_price_pline_rgb] bore_roughing_time_pp
+        *[#$f_price_pline_rgb] pocket_roughing_time_pp
+        *[#$b_price_pline_rgb] pocket_corner_roughing_time_pp
+        *[#$b_price_pline_rgb] hex_pocket_roughing_time_pp
+        *[#$f_price_pline_rgb] slot_roughing_time_pp
+        *[#$b_price_pline_rgb] slot_corner_roughing_time_pp
+        *[#$f_price_pline_rgb] inner_mill_roughing_time_pp
+        *[#$f_price_pline_rgb] outer_mill_roughing_time_pp
+       * rough_turning_time_pp
+        *[#$b_price_pline_rgb] ax_tg_roughing_time_pp
+        *[#$b_price_pline_rgb] rad_tg_roughing_time_pp
+        *[#$f_price_pline_rgb] inner_turn_roughing_time_pp
+        *[#$f_price_pline_rgb] outer_turn_roughing_time_pp
+'       * machining_time_factor
+'        * machining_time_scaling_mult
+'        * machining_form_and_pos_tol_multiplier
+'        * twoside_turning_mach_time_factor
+     *[#$pricing_constants] machine_tool.machine_plus_operator_hour_rate
+'     * machining_cost_pp_factor
+    *[#$order_info] quantity
+   * setup_cost
+    * base_setup_cost
+     * sw_setup_cost*
+      *[#$b_price_pline_rgb] manufacturing.setup_programming_cost
+     * hw_setup_cost*
+      * hw_setup_time
+       * tool_setup_time*
+        *[#$various_pos] num_of_tools
+        *[#$b_price_pline_rgb] manufacturing.setup_time_required_per_tool
+       *[#$pricing_constants] machine_tool.machine_basic_setup_costs*
+       *[#$b_price_pline_rgb] manufacturing.machining_form_and_pos_tol_offset_cost*
+       *[#$b_price_pline_rgb] manufacturing.setup_threads_offset_cost*
+       *[#$b_price_pline_rgb] manufacturing.setup_fittings_offset_cost*
+       *[#$f_price_pline_rgb] manufacturing.setup_clamping_offset_cost*
+       *[#$f_price_pline_rgb] manufacturing.setup_ra_offset_cost*
+       *[#$pricing_constants] STD_MACH_TOOL_MINUTE_RATE
+      *[#$pricing_constants] machine_tool.machine_plus_operator_hour_rate
+      *[#$f_price_pline_rgb] manufacturing.tool_procurement_costs
+  *[#$f_price_pline_rgb] manufacturing.bending_penalty_factor
+ * post_treatment_cost
+  * heat_treatment_cost
+   * post_treatment.heat_treatment_cost
+    *[#$b_price_pline_rgb] hardening_cost
+    *[#$b_price_pline_rgb] gas_nitriding_cost
+'    * plasma_nitriding_cost
+'    * air_stress_relieving_cost
+'    * vacuum_stress_relieving_cost
+'    * tenifer_cost
+'    * carbonitriding_cost
+    *[#$b_price_pline_rgb] ...
+    *[#$b_price_pline_rgb] nitrocarburizing_cost
+  * surface_treatment_cost
+   * post_treatment.surface_treatment_cost
+    *[#$b_price_pline_rgb] vibratory_grinding_cost
+    *[#$b_price_pline_rgb] natur_anodization_cost
+'    * black_anodization_cost
+'    * red_anodization_cost
+'    * blue_anodization_cost
+'    * green_anodization_cost
+'    * hard_anodization_cost
+'    * galvanization_cost
+'    * electropolishing_cost
+'    * black_oxidation_cost
+'    * phosphating_cost
+'    * oxidation_cost
+'    * chromium_cost
+'    * nickelplating_cost
+'    * sandblasting_cost
+'    * glass_bead_blasting_cost
+'    * hard_chrome_plating_cost
+'    * laser_labeling_cost
+'    * mill_labeling_cost
+'    * chrome_plating_cost
+'    * chromate_conversion_coating_cost
+    *[#$b_price_pline_rgb] ...
+    *[#$b_price_pline_rgb] ultrasonic_cleaning_cost
+  * packaging_treatment_cost
+   * post_treatment.packaging_treatment_cost
+    *[#$b_price_pline_rgb] individual_packing_cost
+ * quality_assurance_cost
+  *[#$b_price_pline_rgb] qa_cost
+ * total_grinding_cost
+  * surface_grinding_cost
+   * surface_grinding_properties.machining_cost_pp
+    * grindings.machining_time_pp
+     * scaled_process_time_pp
+      *[#$b_price_pline_rgb] grinding.proecess_time
+      *[#$b_price_pline_rgb] grinding.time_scaling_mult
+     * workpiece_changing_time_pp
+      *[#$b_price_pline_rgb] grinding.workpiece_changes
+      *[#$b_price_pline_rgb] grinding.time_to_change_a_workpiece
+     * tool_changing_time_pp
+      *[#$b_price_pline_rgb] grinding.num_tools
+      *[#$b_price_pline_rgb] grinding.time_to_change_a_tool
+     * traveling_time_pp
+      *[#$b_price_pline_rgb] grinding.num_face_groups
+      *[#$b_price_pline_rgb] traveling_time_per_face_group
+    * grindings.time_to_cost_factor
+     *[#$b_price_pline_rgb] grinding_machine.machine_plus_operator_hour_rate
+   *[#$b_price_pline_rgb] quantity
+   * surface_grinding_properties.setup_cost
+    * grinding.setup_time
+     *[#$b_price_pline_rgb] grinding_mach.machine_basic_setup_time
+     *[#$b_price_pline_rgb] grinding.programming_time
+     * grinding.tool_setup_time
+      *[#$b_price_pline_rgb] grinding.num_tools
+      *[#$b_price_pline_rgb] grinding.time_to_setup_a_tool
+    *[#$b_price_pline_rgb] grinding.time_to_cost_factor
+    *[#$b_price_pline_rgb] grinding.standby_cost_factor
+  *[#$b_price_pline_rgb] cylindrical_grinding_cost
+  * cylindrical_grinding_cost
+   * cylindrical_grinding_properties.machining_cost_pp
+    * grindings.machining_time_pp
+     * scaled_process_time_pp
+      *[#$b_price_pline_rgb] grinding.proecess_time
+      *[#$b_price_pline_rgb] grinding.time_scaling_mult
+     * workpiece_changing_time_pp
+      *[#$b_price_pline_rgb] grinding.workpiece_changes
+      *[#$b_price_pline_rgb] grinding.time_to_change_a_workpiece
+     * tool_changing_time_pp
+      *[#$b_price_pline_rgb] grinding.num_tools
+      *[#$b_price_pline_rgb] grinding.time_to_change_a_tool
+     * traveling_time_pp
+      *[#$b_price_pline_rgb] grinding.num_face_groups
+      *[#$b_price_pline_rgb] traveling_time_per_face_group
+    * grindings.time_to_cost_factor
+     *[#$b_price_pline_rgb] grinding_machine.machine_plus_operator_hour_rate
+   *[#$b_price_pline_rgb] quantity
+   * cylindrical_grinding_properties.setup_cost
+    * grinding.setup_time
+     *[#$b_price_pline_rgb] grinding_mach.machine_basic_setup_time
+     *[#$b_price_pline_rgb] grinding.programming_time
+     * grinding.tool_setup_time
+      *[#$b_price_pline_rgb] grinding.num_tools
+      *[#$b_price_pline_rgb] grinding.time_to_setup_a_tool
+    *[#$b_price_pline_rgb] grinding.time_to_cost_factor
+    *[#$b_price_pline_rgb] grinding.standby_cost_factor
+@endmindmap

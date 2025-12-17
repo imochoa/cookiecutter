@@ -1,0 +1,13 @@
+@startmindmap
+!include_once <awslib/AWSCommon>
+!include_once <awslib/ManagementGovernance/all.puml>
+!include_once <awslib/General/all.puml>
+!include_once <awslib/Groups/all.puml>
+
+' Re-usable images with colors
+* $OrganizationsIMG()\nAWS Organization Structure
+' Sprites do not support colors!
+** <$Organizations>
+' You can specify it though, but that's annoying
+*** <$Organizations,color=Orange>
+@endmindmap

@@ -1,0 +1,87 @@
+@startmindmap
+!include_once spanlib.iuml
+
+' <style>
+' node {
+'     Padding 12
+'     Margin 3
+'     HorizontalAlignment center
+'     LineColor blue
+'     LineThickness 3.0
+'     BackgroundColor gold
+'     RoundCorner 40
+'     MaximumWidth 100
+' }
+
+' rootNode {
+'     LineStyle 8.0;3.0
+'     LineColor red
+'     BackgroundColor white
+'     LineThickness 1.0
+'     RoundCorner 0
+'     Shadowing 0.0
+' }
+
+' leafNode {
+'     LineColor gold
+'     RoundCorner 0
+'     Padding 3
+' }
+
+' arrow {
+'     LineStyle 4
+'     LineThickness 0.5
+'     LineColor green
+' }
+' </style>
+
+<style>
+node {
+    Padding 10
+    Margin 10
+    HorizontalAlignment center
+    LineColor black
+    LineThickness 1.0
+    RoundCorner 20
+    MaximumWidth 150
+}
+
+arrow {
+    ' LineStyle 12
+    LineThickness 1.5
+    LineColor Black
+}
+</style>
+
+'title Dependencies
+
+
+*[#White] **Get material data**
+ *_ material_id
+  *[#LightCyan] **Add it to the WEB platform** 
+  *[#LightGreen] **material_id vs post treatment compatibility**
+  *[#Orange] **Add Stocks**
+   *_ Box
+   *_ Plate
+   *_ Block
+   *_ Cyl
+   *_ Tube
+ *_ name
+  *[#$pdf_pline_rgb] **Add regex expression to the OCR ** 
+ *_ density
+ *[#LightSalmon] **material category**
+  *_ Is this a new category?
+   *_ unique str
+   *_ low stock-mass penalty factor
+   *_ saas tuning factors
+   *_ cutting values
+    *_ number of teeth
+    *_ cutting speed
+    *_ depth of cut
+    *_ feed rates
+     *_ turning
+     *_ milling
+     *_ boring
+
+@endmindmap
+

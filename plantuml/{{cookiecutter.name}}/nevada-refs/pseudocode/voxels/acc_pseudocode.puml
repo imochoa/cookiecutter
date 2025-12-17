@@ -1,0 +1,54 @@
+@startuml
+!include ../../spanlib.iuml
+
+' scale 450 width
+
+' -----------------------------------------------------
+state "Voxel Accessibility" as TOPLEVEL {
+' Inner states
+state "Check rerun" as CACHE_CHECK
+state WAS_CACHED <<end>> #magenta
+state "For all surface ijks" as SURFACE_IJKS
+state "Get the normal vector" as NORMAL_VEC
+state "Follow until" as EXIT_COND
+state "Leaving the matrix" as OC1
+state "Intersecting with the part" as NOC1
+state "Orthogonally accessible" as OC2
+state "NOT Orthogonally accessible" as NOC2
+state "Save the <b>delta thickness</b>" as EXIT
+
+' state BAD_NORMAL_VEC <<end>> #magenta
+' state BAD_EXIT_COND <<end>> #magenta
+' state BAD_POSTPROCESS <<end>> #magenta
+
+SURFACE_IJKS : Using the C2 kernel
+
+
+OC1 : Infinite thickness 
+' MANUFACTURING : <b> Orthogonally accessible </b>
+
+NOC1 : Pad the distance to compensate 
+NOC1 : for thickness of the voxels left
+NOC1 : on either side of the line-segment
+
+' OK Connections
+[*] --> CACHE_CHECK
+' Exit Connections
+CACHE_CHECK -> WAS_CACHED : known answer
+CACHE_CHECK --> SURFACE_IJKS
+SURFACE_IJKS --> NORMAL_VEC
+NORMAL_VEC --> EXIT_COND 
+
+
+EXIT_COND --> NOC1
+OC1 --> OC2
+OC2 --> EXIT
+
+EXIT_COND --> OC1
+NOC1 --> NOC2
+NOC2 --> EXIT
+EXIT --> [*] : OK
+
+}
+
+@enduml

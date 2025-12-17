@@ -1,0 +1,106 @@
+@startuml
+!include ../../spanlib.iuml
+
+' scale 450 width
+
+[*] -> BP_STATE
+
+' -----------------------------------------------------
+state "Basic Pricing" as BP_STATE {
+' Inner states
+state "Find parameters" as MATERIAL_DATA
+state "Select Stock" as STOCK
+state "Select Machine tool" as MACHINETOOL
+state "Manufacturing costs" as MANUFACTURING
+state "Post-process costs" as POSTPROCESSING
+
+state BAD_STOCK <<end>> #magenta
+state BAD_MACHINETOOL <<end>> #magenta
+state BAD_POSTPROCESS <<end>> #magenta
+
+MATERIAL_DATA : Material info
+MATERIAL_DATA : SAAS tuning params
+
+' MACHINETOOL : Sort the edges
+' MACHINETOOL : Sort the faces
+
+MANUFACTURING : Roughing 
+MANUFACTURING : finishing
+MANUFACTURING : Setup
+
+POSTPROCESSING : Post-treatment cost
+POSTPROCESSING : QA costs
+
+
+' OK Connections
+[*] --> MATERIAL_DATA
+MATERIAL_DATA --> STOCK
+STOCK --> MACHINETOOL 
+MACHINETOOL --> MANUFACTURING
+MANUFACTURING --> POSTPROCESSING
+POSTPROCESSING --> [*] : OK
+
+' Errors
+STOCK -> BAD_STOCK : No stock!
+MACHINETOOL -> BAD_MACHINETOOL : No machine tool!
+POSTPROCESSING -> BAD_POSTPROCESS : Incompatible\npost-process!
+}
+
+' -----------------------------------------------------
+' state "Machinability" as MACH_STATE {
+' }
+
+' state "Feature extraction" as FEXT_STATE {
+' }
+
+' -----------------------------------------------------
+BP_STATE -> FP_STATE: Successful
+
+state V_INVALID <<end>> #magenta
+BP_STATE --> V_INVALID: Failed
+' BP_STATE -> FAIL: Failed
+state "Final pricing" as FP_STATE {
+' Inner states
+state "Wall thickness" as WALLTHK
+state "Bending" as BENDING
+state "Clamping" as CLAMPING
+state "Update roughing & finishing" as VOXMACH
+state "Special feature roughing" as FEATURES
+' {
+' state "Basic data" as GEARS
+' state BAD_GEARS <<end>> #magenta
+' state "Basic data" as OTHERS
+' }
+
+' state "Safety checks" as P_SAFETY_CHECKS
+
+' state BAD_GEARS <<end>> #magenta
+
+' WALLTHK : Sets ""WALLTHK"", ""axis_pnt"", ""axis_dir""
+
+' FEATURES : Gears
+' FEATURES : Normal machining features
+
+' P_SAFETY_CHECKS : Surface/Area ratio
+' P_SAFETY_CHECKS : Max bore depth
+
+' OK Connections
+[*] --> WALLTHK
+WALLTHK --> BENDING
+BENDING --> CLAMPING
+CLAMPING --> VOXMACH
+VOXMACH --> FEATURES
+' FEATURES --> P_SAFETY_CHECKS
+' P_SAFETY_CHECKS --> [*] : OK
+FEATURES --> [*] : OK
+
+' Errors
+' FEATURES -> BAD_GEARS : had gears!
+
+
+}
+' -----------------------------------------------------
+
+FP_STATE -> [*]: Successful
+
+@enduml

@@ -1,0 +1,46 @@
+@startuml
+!include ../../spanlib.iuml
+
+' -----------------------------------------------------
+state "Voxel Bending" as TOPLEVEL {
+' Inner states
+state "Parse inputs" as INPUT_PARSING
+state "Check rerun" as CACHE_CHECK
+state "New run" as OC1
+state "Cached variables" as NOC1
+state "Calculate Displacements" as CASTIGLIANO
+state "Extend the bending case map" as EXIT
+
+state WAS_CACHED <<end>> #magenta
+
+INPUT_PARSING : Read feature extraction
+INPUT_PARSING : Read order info
+INPUT_PARSING : select bending axis
+
+OC1 : Slice the part
+OC1 : Calculate the bending inertias per slice
+
+NOC1 : Recover the bending inertias
+
+' OK Connections
+[*] --> INPUT_PARSING
+INPUT_PARSING --> CACHE_CHECK
+CACHE_CHECK --> OC1
+CACHE_CHECK --> NOC1
+
+
+OC1 --> CASTIGLIANO
+NOC1 --> CASTIGLIANO
+
+CASTIGLIANO : Remove unmachined faces
+
+CASTIGLIANO --> EXIT
+
+' Exit Connections
+CACHE_CHECK -> WAS_CACHED : known answer
+
+EXIT --> [*] : OK
+
+}
+
+@enduml

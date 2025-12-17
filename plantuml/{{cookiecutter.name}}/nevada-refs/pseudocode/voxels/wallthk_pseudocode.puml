@@ -1,0 +1,38 @@
+@startuml
+!include ../../spanlib.iuml
+
+' -----------------------------------------------------
+state "Voxel Wall Thickness" as TOPLEVEL {
+' Inner states
+state "Check rerun" as CACHE_CHECK
+state WAS_CACHED <<end>> #magenta
+state "For all surface ijks" as SURFACE_IJKS
+state "Get the normal vector" as NORMAL_VEC
+state "Flip its direction" as FLIP
+state "Traverse until exiting the solid" as TRAVERSE
+state "Save the exit-entry distance" as EXIT
+
+' state BAD_NORMAL_VEC <<end>> #magenta
+' state BAD_FLIP <<end>> #magenta
+' state BAD_POSTPROCESS <<end>> #magenta
+
+SURFACE_IJKS : Using the C2 kernel
+
+EXIT : Pad the distance to compensate 
+EXIT : for thickness of the voxels left
+EXIT : on either side of the line-segment
+
+' OK Connections
+[*] --> CACHE_CHECK
+' Exit Connections
+CACHE_CHECK -> WAS_CACHED : known answer
+CACHE_CHECK --> SURFACE_IJKS
+SURFACE_IJKS --> NORMAL_VEC
+NORMAL_VEC --> FLIP 
+FLIP --> TRAVERSE
+TRAVERSE --> EXIT
+EXIT --> [*] : OK
+
+}
+
+@enduml

@@ -1,0 +1,70 @@
+@startuml
+
+!include ../spanlib.iuml
+
+' hide the spot
+hide circle
+
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+left to right direction
+
+
+entity "materials" as mats {
+  material_id : VARCHAR <<PK>>
+  --
+  category : VARCHAR <<FK>>
+  density : FLOAT [kg/dm^3]
+}
+
+entity "cutting_params" as cats {
+    material_category : VARCHAR <<PK>>
+    --
+    depth_of_cut: FLOAT [mm]
+    number_of_teeth : INT [-]
+    cutting_speed : FLOAT [m/min]
+    ..
+    turning_feed_rate_lower_ra : FLOAT [<U+03BC>m]
+    turning_feed_rate_lower_val : FLOAT [mm/rev]
+    turning_feed_rate_upper_ra : FLOAT [<U+03BC>m]
+    turning_feed_rate_upper_val : FLOAT  [mm/rev]
+    ..
+    milling_feed_rate_lower_ra : FLOAT [<U+03BC>m]
+    milling_feed_rate_lower_factor : FLOAT [-]
+    milling_feed_rate_upper_ra : FLOAT [<U+03BC>m]
+    milling_feed_rate_upper_factor : FLOAT [-]
+    milling_feed_rate_lower_tool_d : FLOAT [mm]
+    milling_feed_rate_lower_val_at_ra64 : FLOAT [mm/rev/tooth]
+    milling_feed_rate_upper_tool_d : FLOAT [mm]
+    milling_feed_rate_upper_val_at_ra64 : FLOAT [mm/rev/tooth]
+    ..
+    boring_feed_rate_lower_ra : FLOAT [<U+03BC>m]
+    boring_feed_rate_lower_factor : FLOAT [-]
+    boring_feed_rate_upper_ra : FLOAT [<U+03BC>m]
+    boring_feed_rate_upper_factor : FLOAT [-]
+    boring_feed_rate_lower_tool_d : FLOAT [mm]
+    boring_feed_rate_lower_val_at_ra64 : FLOAT [mm/rev]
+    boring_feed_rate_upper_tool_d : FLOAT [mm]
+    boring_feed_rate_upper_val_at_ra64 : FLOAT [mm/rev]
+}
+
+
+' Zero or One	|o--
+' Exactly One	||--
+' Zero or Many	}o--
+' One or Many	}|--
+
+
+' Entity01 }|..|| Entity02
+' Entity03 }o..o| Entity04
+' Entity05 ||--o{ Entity06
+' Entity07 |o--|| Entity08
+
+
+' mats::category ||-|| cats
+
+ mats::category ||--|{ cats::material_category
+
+
+@enduml

@@ -1,0 +1,9 @@
+@startuml
+!include ../../spanlib.iuml
+
+' -----------------------------------------------------
+state "Voxelization" as TOPLEVEL {
+
+}
+
+@enduml

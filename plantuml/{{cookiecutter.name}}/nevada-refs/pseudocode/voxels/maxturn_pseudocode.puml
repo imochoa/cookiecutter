@@ -1,0 +1,41 @@
+@startuml
+!include ../../spanlib.iuml
+
+' -----------------------------------------------------
+state "Voxel Max Turning" as TOPLEVEL {
+' Inner states
+state "Turning axis available?" as EXIT_COND
+state "No" as OC1
+state "Yes" as NOC1
+state "No calculations\nrequired" as OC2
+state "Revolve voxels\naround axis" as NOC2
+state "Save the max_turn_mat" as EXIT
+
+' state BAD_NORMAL_VEC <<end>> #magenta
+' state BAD_EXIT_COND <<end>> #magenta
+' state BAD_POSTPROCESS <<end>> #magenta
+
+
+OC1 : pure milling parts
+OC2 : It's all 1's
+
+NOC1 : pure turning parts
+NOC1 : mill turning parts
+
+
+' OK Connections
+[*] --> EXIT_COND
+'
+
+EXIT_COND --> NOC1
+OC1 --> OC2
+OC2 --> EXIT
+
+EXIT_COND --> OC1
+NOC1 --> NOC2
+NOC2 --> EXIT
+EXIT --> [*] : OK
+
+}
+
+@enduml

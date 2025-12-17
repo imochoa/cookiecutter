@@ -1,0 +1,257 @@
+@startmindmap
+!include_once ../spanlib.iuml
+
+' <style>
+' node {
+'     Padding 12
+'     Margin 3
+'     HorizontalAlignment center
+'     LineColor blue
+'     LineThickness 3.0
+'     BackgroundColor gold
+'     RoundCorner 40
+'     MaximumWidth 100
+' }
+
+' rootNode {
+'     LineStyle 8.0;3.0
+'     LineColor red
+'     BackgroundColor white
+'     LineThickness 1.0
+'     RoundCorner 0
+'     Shadowing 0.0
+' }
+
+' leafNode {
+'     LineColor gold
+'     RoundCorner 0
+'     Padding 3
+' }
+
+' arrow {
+'     LineStyle 4
+'     LineThickness 0.5
+'     LineColor green
+' }
+' </style>
+
+<style>
+node {
+    Padding 10
+    Margin 10
+    HorizontalAlignment center
+    LineColor black
+    LineThickness 1.0
+    RoundCorner 20
+    MaximumWidth 150
+    node {
+        BackgroundColor White
+    }
+}
+
+arrow {
+    ' LineStyle 12
+    LineThickness 1.5
+    LineColor Black
+}
+</style>
+
+' Algorithm = Calculation Pipeline + PDF Pipeline
+' Calculation Pipeline = 3D Pipeline + Pricing Pipeline
+' 3D Pipeline = CAD Pipeline + Voxel Pipeline
+
+' Color
+' *[#Red] stock_cost
+
+' Reverse it?
+'   left side
+
+* net_cost
+ * stock_cost
+  * material_cost
+   * base_stock_cost
+    * base_stock_cost_pp
+     * stock.price_per_kg
+     * stock_mass_pp
+      * stock.volume
+      * material.density
+     * tuning_factors.chosen_stock_cost_tuning_factor
+    * quantity
+   * stock_cost_factor
+  * stock_sawing_cost
+   * stock_sawing_cost_pp
+    * stock_sawing_time_pp
+     * stock.eq_sawed_area
+     * stock.sawing_surface_rate
+      * learning_rate_tuning_factor
+    * stock.sawing_hour_rate
+   * quantity
+ * manufacturing_cost
+  * base_manufacturing_cost
+   * machining_cost
+    * machining_cost_pp
+     * base_machining_cost_pp
+      * manufacturing.machining_time_pp
+       * base_machining_time_pp
+        * workpiece_changing_time
+        * tool_changing_time_pp
+         * time_it_takes_to_change_a_tool
+         * num_of_tools
+        * finish_machining_time_pp
+         * finish_machining_time_post_offset
+          * fittings_finishing_time_pp
+           * finishing_fittings_offset_area
+           * effective_surface_finish_rate
+          * threads_finishing_time_pp
+           * finishing_threads_offset_area
+           * effective_surface_finish_rate
+         * base_finish_machining_time_pp
+         * unfinished_faces_finishing_time_pp
+          * finishing_unfinished_offset_area
+          * effective_surface_finish_rate
+         * finish_machining_time_factor
+          * finishing_tol_multiplier
+          * finishing_complexity_factor
+        * rough_machining_time_pp
+         * rough_milling_time_pp
+          * base_rough_mach_time_pp
+          * bore_roughing_time_pp
+          * pocket_roughing_time_pp
+          * pocket_corner_roughing_time_pp
+          * hex_pocket_roughing_time_pp
+          * slot_roughing_time_pp
+          * slot_corner_roughing_time_pp
+          * inner_mill_roughing_time_pp
+          * outer_mill_roughing_time_pp
+         * rough_turning_time_pp
+          * ax_tg_roughing_time_pp
+          * rad_tg_roughing_time_pp
+          * inner_turn_roughing_time_pp
+          * outer_turn_roughing_time_pp
+       * machining_time_factor
+        * machining_time_scaling_mult
+         * tuning_factors.learning_rate_tuning_factor
+        * machining_form_and_pos_tol_multiplier
+        * twoside_turning_mach_time_factor
+      * machine_tool.machine_plus_operator_hour_rate
+     * machining_cost_pp_factor
+    * quantity
+   * setup_cost
+    * base_setup_cost
+     * sw_setup_cost
+      * manufacturing.setup_programming_cost
+      * tuning_factors.sw_setup_cost_tuning_factor
+     * hw_setup_cost
+      * hw_setup_time
+       * tool_setup_time
+        * manufacturing.tools.num_of_tools
+        * manufacturing.setup_time_required_per_tool
+       * tuning_factors.hw_setup_cost_tuning_factor
+       * machine_tool.machine_tool_setup_cost_tuning_factor
+       * machine_tool.machine_basic_setup_costs
+       * manufacturing.machining_form_and_pos_tol_offset_cost
+       * manufacturing.setup_threads_offset_cost
+       * manufacturing.setup_fittings_offset_cost
+       * manufacturing.setup_clamping_offset_cost
+       * manufacturing.setup_ra_offset_cost
+       * STD_MACH_TOOL_MINUTE_RATE
+      * machine_tool.machine_plus_operator_hour_rate
+      * manufacturing.machine_standby_cost_factor
+      * manufacturing.tool_procurement_costs
+  * manufacturing.bending_penalty_factor
+ * post_treatment_cost
+  * heat_treatment_cost
+   * post_treatment.heat_treatment_cost
+    * hardening_cost
+    * gas_nitriding_cost
+    * plasma_nitriding_cost
+    * air_stress_relieving_cost
+    * vacuum_stress_relieving_cost
+    * tenifer_cost
+    * carbonitriding_cost
+    * nitrocarburizing_cost
+  * surface_treatment_cost
+   * post_treatment.surface_treatment_cost
+    * vibratory_grinding_cost
+    * natur_anodization_cost
+    * black_anodization_cost
+    * red_anodization_cost
+    * blue_anodization_cost
+    * green_anodization_cost
+    * hard_anodization_cost
+    * galvanization_cost
+    * electropolishing_cost
+    * black_oxidation_cost
+    * phosphating_cost
+    * oxidation_cost
+    * chromium_cost
+    * nickelplating_cost
+    * sandblasting_cost
+    * glass_bead_blasting_cost
+    * hard_chrome_plating_cost
+    * laser_labeling_cost
+    * mill_labeling_cost
+    * chrome_plating_cost
+    * chromate_conversion_coating_cost
+    * ultrasonic_cleaning_cost
+  * packaging_treatment_cost
+   * post_treatment.packaging_treatment_cost
+    * individual_packing_cost
+ * quality_assurance_cost
+  * qa_cost
+ * total_grinding_cost
+  * surface_grinding_cost
+   * surface_grinding_properties.machining_cost_pp
+    * grindings.machining_time_pp
+     * scaled_process_time_pp
+      * grinding.proecess_time
+      * grinding.time_scaling_mult
+     * workpiece_changing_time_pp
+      * grinding.workpiece_changes
+      * grinding.time_to_change_a_workpiece
+     * tool_changing_time_pp
+      * grinding.num_tools
+      * grinding.time_to_change_a_tool
+     * traveling_time_pp
+      * grinding.num_face_groups
+      * traveling_time_per_face_group
+    * grindings.time_to_cost_factor
+     * grinding_machine.machine_plus_operator_hour_rate
+   * quantity
+   * surface_grinding_properties.setup_cost
+    * grinding.setup_time
+     * grinding_mach.machine_basic_setup_time
+     * grinding.programming_time
+     * grinding.tool_setup_time
+      * grinding.num_tools
+      * grinding.time_to_setup_a_tool
+    * grinding.time_to_cost_factor
+    * grinding.standby_cost_factor
+  * cylindrical_grinding_cost
+   * cylindrical_grinding_properties.machining_cost_pp
+    * grindings.machining_time_pp
+     * scaled_process_time_pp
+      * grinding.proecess_time
+      * grinding.time_scaling_mult
+     * workpiece_changing_time_pp
+      * grinding.workpiece_changes
+      * grinding.time_to_change_a_workpiece
+     * tool_changing_time_pp
+      * grinding.num_tools
+      * grinding.time_to_change_a_tool
+     * traveling_time_pp
+      * grinding.num_face_groups
+      * traveling_time_per_face_group
+    * grindings.time_to_cost_factor
+     * grinding_machine.machine_plus_operator_hour_rate
+   * quantity
+   * cylindrical_grinding_properties.setup_cost
+    * grinding.setup_time
+     * grinding_mach.machine_basic_setup_time
+     * grinding.programming_time
+     * grinding.tool_setup_time
+      * grinding.num_tools
+      * grinding.time_to_setup_a_tool
+    * grinding.time_to_cost_factor
+    * grinding.standby_cost_factor
+@endmindmap

@@ -1,0 +1,68 @@
+@startuml
+'!include_once https://raw.githubusercontent.com/imochoa/dotfiles/master/dotfiles/plantuml/plantuml_style.iuml
+!include_once style.iuml
+
+skinparam arrowColor Black
+
+' Pipeline colors
+!$cad_pline_rgb = "PaleGreen"
+!$vox_pline_rgb = "PaleTurquoise"
+!$price_pline_rgb = "LightCoral"
+!$pdf_pline_rgb = "Bisque"
+
+
+' Arrow colors
+' !$preproc_stp_rgb = "DarkGoldenRod"
+
+' PROCEDURES
+' JSON
+!procedure $json($txt, $name)
+file "$txt" <<JSON>> as $name #RoyalBlue;line:Black;text:White
+!endprocedure
+
+!$fext_rgb = "Red"
+!$fext_style = "thickness=2,#Red"
+!procedure $fext($txt, $name)
+file "$txt" <<JSON>> as $name #RoyalBlue;line:$fext_rgb;text:White
+!endprocedure
+
+!$oi_rgb = "LimeGreen"
+!$oi_style = "thickness=2,#LimeGreen"
+!procedure $oi($txt, $name)
+file "$txt" <<JSON>> as $name #RoyalBlue;line:$oi_rgb;text:White
+!endprocedure
+
+' STEP
+!procedure $step($txt, $name)
+file "$txt" <<STEP>> as $name #Gold
+!endprocedure
+
+!$cad_rgb = "DarkGoldenRod"
+!$cad_style =  "thickness=2,#DarkGoldenRod"
+!procedure $cad($txt, $name)
+file "$txt" <<STEP>> as $name #Gold;line:$cad_rgb;text:SaddleBrown
+!endprocedure
+
+
+' PDF
+!procedure $pdf($txt, $name)
+file "$txt" <<PDF>> as $name #LightYellow
+!endprocedure
+
+' NPZ
+!procedure $npz($txt, $name)
+file "$txt" <<NPZ>> as $name #Linen;line.dashed
+!endprocedure
+
+!$cache_rgb = "Indigo"
+!$cache_style = "dotted,thickness=2,#Indigo"
+!procedure $cache($txt, $name)
+file "$txt" <<NPZ>> as $name #Beige;line:$cache_rgb;text:$cache_rgb
+!endprocedure
+
+' ALGO NODES
+!procedure $fcn($txt, $name)
+node "$txt" as $name #SlateGray;line:Black;text:white
+!endprocedure
+
+@enduml

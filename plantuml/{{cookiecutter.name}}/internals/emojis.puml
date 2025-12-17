@@ -1,0 +1,7 @@
+@startuml
+' Use like:
+' <:innocent:> 
+' Without color: <#0:sunglasses:>
+' Change color: <#green:sunny:>
+emoji 1F9 
+@enduml

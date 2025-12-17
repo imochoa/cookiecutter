@@ -1,0 +1,102 @@
+@startuml
+' !include style.puml
+' !include_once https://raw.githubusercontent.com/imochoa/dotfiles/master/dotfiles/plantuml/plantuml_style.iuml
+
+!include ../spanlib.iuml
+' !include_once spanlib.iuml
+
+left to right direction
+
+skinparam linetype polyline
+
+' skinparam linetype ortho
+' skinparam linetype spline
+
+
+' DEFINITIONS
+
+' ---- inputs
+$step("raw", "STEP_RAW")
+together {
+' $json("order info", "JSON_OI")
+$oi("order info", "JSON_OI")
+$json("config", "JSON_CONFIG")
+}
+
+
+rectangle "CAD Pipeline" #$cad_pline_rgb{
+' ---- preprocessing
+$fcn("preprocessing", "FCN_PREPROC")
+$json("processed", "JSON_PREPROC")
+' $step("processed", "STEP_PREPROC")
+$cad("processed", "STEP_PREPROC")
+
+' ---- fext
+$fcn("feature extraction", "FCN_FEXT")
+' $json("feature extraction", "JSON_FEXT")
+$fext("feature extraction", "JSON_FEXT")
+}
+
+
+' ---- machinability
+rectangle "Voxel Pipeline" #$vox_pline_rgb {
+$json("machinability", "JSON_MACH")
+}
+
+' ---- bpricing
+rectangle "Pricing Pipeline" #$price_pline_rgb  {
+$fcn("basic pricing", "FCN_BP")
+$json("basic pricing", "JSON_BP")
+
+' ---- fpricing
+$fcn("final pricing", "FCN_FP")
+$json("final pricing", "JSON_FP")
+}
+
+
+
+
+
+
+
+' CONNECTIONS
+' !$stp_rgb = "DarkGoldenRod"
+' !$fext_rgb = "Darkorange"
+' !$cache_style = "dashed,#black"
+
+' ---- preprocessing
+' STEP_RAW --> FCN_PREPROC
+' FCN_PREPROC --> STEP_PREPROC
+' FCN_PREPROC -> JSON_PREPROC : "metadata"
+
+' ' ---- fext
+' STEP_PREPROC -[#$cad_rgb]-> FCN_FEXT
+' FCN_FEXT --> JSON_FEXT
+
+!include cad_pipeline.puml
+
+
+' ---- machinability
+
+STEP_PREPROC -[thickness=3,#$cad_rgb,dashed]-> JSON_MACH : simplified
+JSON_FEXT -[thickness=3,#$fext_rgb,dashed]-> JSON_MACH : simplified
+JSON_OI -[thickness=3,#$oi_rgb,dashed]-> JSON_MACH : simplified
+
+' ---- bpricing
+' JSON_FEXT -[#$fext_rgb]-> FCN_BP
+' JSON_OI -[#$oi_rgb]-> FCN_BP
+' JSON_CONFIG .[dashed].> FCN_BP: "optional"
+' FCN_BP --> JSON_BP
+
+' ---- fpricing
+' JSON_FEXT -[#$fext_rgb]-> FCN_FP
+' JSON_BP --> FCN_FP
+' JSON_CONFIG ..> FCN_FP: "optional"
+' JSON_MACH --> FCN_FP
+' FCN_FP --> JSON_FP
+!include pricing_pipeline.puml
+
+!include doc_pipeline.puml
+
+
+@enduml

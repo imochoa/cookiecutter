@@ -1,0 +1,48 @@
+@startuml
+' !include style.puml
+' !include_once https://raw.githubusercontent.com/imochoa/dotfiles/master/dotfiles/plantuml/plantuml_style.iuml
+
+' !include_once spanlib.iuml
+!include ../spanlib.iuml
+
+left to right direction
+
+' skinparam linetype ortho
+' skinparam linetype spline
+skinparam linetype polyline
+
+
+' DEFINITIONS
+
+' ---- inputs
+$step("raw", "STEP_RAW")
+
+
+rectangle "CAD Pipeline" #$cad_pline_rgb{
+' ---- preprocessing
+$fcn("preprocessing", "FCN_PREPROC")
+$json("processed", "JSON_PREPROC")
+' $step("processed", "STEP_PREPROC")
+$cad("processed", "STEP_PREPROC")
+
+' ---- fext
+$fcn("feature extraction", "FCN_FEXT")
+' $json("feature extraction", "JSON_FEXT")
+$fext("feature extraction", "JSON_FEXT")
+
+
+' CONNECTIONS
+' !$stp_rgb = "DarkGoldenRod"
+' !$fext_rgb = "Darkorange"
+' !$cache_style = "dashed,#black"
+
+' ---- preprocessing
+STEP_RAW --> FCN_PREPROC
+FCN_PREPROC --> STEP_PREPROC
+FCN_PREPROC -[dashed]> JSON_PREPROC : "metadata"
+
+' ---- fext
+STEP_PREPROC -[$cad_style]-> FCN_FEXT
+FCN_FEXT --> JSON_FEXT
+
+@enduml

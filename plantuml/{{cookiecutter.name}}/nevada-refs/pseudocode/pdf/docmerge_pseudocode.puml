@@ -1,0 +1,99 @@
+@startuml
+!include ../../spanlib.iuml
+
+' scale 450 width
+
+[*] -> V_STATE
+
+' -----------------------------------------------------
+state "Preprocessing" as V_STATE {
+' Inner states
+state "Basic data" as BASIC_DATA
+state "Minimum size check" as MINSIZE
+state "Sort the topology" as TOPO_SORT
+state "Build the face graph" as FACE_GRAPH
+state "Find compound cylinders" as FIND_CYLS
+
+state BAD_MINSIZE <<end>> #magenta
+
+BASIC_DATA : Volume, Surface area, Center of mass
+BASIC_DATA : Principal inertia axes
+
+TOPO_SORT : Sort the edges
+TOPO_SORT : Sort the faces
+
+' OK Connections
+[*] --> BASIC_DATA
+BASIC_DATA --> MINSIZE
+MINSIZE --> TOPO_SORT : Bigger than min. size
+TOPO_SORT --> FACE_GRAPH
+FACE_GRAPH --> FIND_CYLS
+FIND_CYLS --> [*] : OK
+
+' Errors
+MINSIZE -> BAD_MINSIZE : was too small!
+
+}
+
+' -----------------------------------------------------
+V_STATE -> R_STATE: Successful
+state V_INVALID <<end>> #magenta
+V_STATE --> V_INVALID: Failed
+' V_STATE -> FAIL: Failed
+state "Processing" as R_STATE {
+' Inner states
+state "Determine the part type" as PART_TYPE
+state "Calculate the finishing complexity factor" as FINISHING_CFACTOR
+state "Find the bounding shape" as BOUNDING_GEOMETRY
+state "Calculate the convex hull volume" as CONVEXHULL
+state "Find the features" as FEATURES
+' {
+' state "Basic data" as GEARS
+' state BAD_GEARS <<end>> #magenta
+' state "Basic data" as OTHERS
+' }
+
+state "Safety checks" as P_SAFETY_CHECKS
+
+state BAD_GEARS <<end>> #magenta
+
+PART_TYPE : Sets ""part_type"", ""axis_pnt"", ""axis_dir""
+
+FEATURES : Gears
+FEATURES : Normal machining features
+
+P_SAFETY_CHECKS : Surface/Area ratio
+P_SAFETY_CHECKS : Max bore depth
+
+' OK Connections
+[*] --> PART_TYPE
+PART_TYPE --> FINISHING_CFACTOR
+FINISHING_CFACTOR --> BOUNDING_GEOMETRY
+BOUNDING_GEOMETRY --> CONVEXHULL
+CONVEXHULL --> FEATURES
+FEATURES --> P_SAFETY_CHECKS
+P_SAFETY_CHECKS --> [*] : OK
+
+' Errors
+FEATURES -> BAD_GEARS : had gears!
+
+
+}
+' -----------------------------------------------------
+
+R_STATE -> E_STATE: Successful
+state R_INVALID <<end>> #magenta
+R_STATE --> R_INVALID: Failed
+' R_STATE -> FAIL: Failed
+state "Postprocessing" as E_STATE {
+' Inner states
+state "Export JSON file" as EXPORT
+
+[*] --> EXPORT
+EXPORT --> [*]
+}
+
+' E_STATE --> SUCCESS
+E_STATE -> [*]: Successful
+' E_STATE -> FAIL: Failed
+@enduml

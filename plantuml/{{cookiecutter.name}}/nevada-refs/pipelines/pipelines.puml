@@ -1,0 +1,71 @@
+@startmindmap
+!include_once ../spanlib.iuml
+
+' <style>
+' node {
+'     Padding 12
+'     Margin 3
+'     HorizontalAlignment center
+'     LineColor blue
+'     LineThickness 3.0
+'     BackgroundColor gold
+'     RoundCorner 40
+'     MaximumWidth 100
+' }
+
+' rootNode {
+'     LineStyle 8.0;3.0
+'     LineColor red
+'     BackgroundColor white
+'     LineThickness 1.0
+'     RoundCorner 0
+'     Shadowing 0.0
+' }
+
+' leafNode {
+'     LineColor gold
+'     RoundCorner 0
+'     Padding 3
+' }
+
+' arrow {
+'     LineStyle 4
+'     LineThickness 0.5
+'     LineColor green
+' }
+' </style>
+
+<style>
+node {
+    Padding 10
+    Margin 10
+    HorizontalAlignment center
+    LineColor black
+    LineThickness 1.0
+    RoundCorner 20
+    MaximumWidth 150
+}
+
+arrow {
+    ' LineStyle 12
+    LineThickness 1.5
+    LineColor Black
+}
+</style>
+
+' Algorithm = Calculation Pipeline + PDF Pipeline
+' Calculation Pipeline = 3D Pipeline + Pricing Pipeline
+' 3D Pipeline = CAD Pipeline + Voxel Pipeline
+
+*[#White] Algorithm
+ *[#White] Calculation Pipeline
+  *[#White] 3D Pipeline
+   *[#$cad_pline_rgb] CAD Pipeline
+    ' *_ <color:gray>STEP file <&chevron-right> data</color>
+   *[#$vox_pline_rgb] Voxel Pipeline
+    ' *_ <color:gray>Geometry <&chevron-right> data</color>
+  *[#$price_pline_rgb] Pricing Pipeline
+'    *_ <color:gray>data <&chevron-right> price estimation</color>
+ *[#$pdf_pline_rgb] PDF Pipeline
+'   *_ <color:gray>PDF <&chevron-right> order info presections</color>
+@endmindmap

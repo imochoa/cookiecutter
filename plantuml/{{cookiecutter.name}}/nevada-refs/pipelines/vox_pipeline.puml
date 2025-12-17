@@ -1,0 +1,107 @@
+@startuml
+' !include style.puml
+' !include_once https://raw.githubusercontent.com/imochoa/dotfiles/master/dotfiles/plantuml/plantuml_style.iuml
+
+!include vox_pipeline_no_cache.puml
+
+' left to right direction
+
+skinparam linetype polyline
+' skinparam linetype spline
+' skinparam linetype ortho
+
+' DEFINITIONS
+
+' $json("order info", "JSON_OI")
+' $oi("order info", "JSON_OI")
+
+
+' rectangle "CAD Pipeline" #$cad_pline_rgb{
+' $step("processed", "STEP_PREPROC")
+' $fext("feature extraction", "JSON_FEXT")
+' }
+
+
+' ---- machinability
+rectangle "Voxel Pipeline" #$vox_pline_rgb {
+' $fcn("voxelize", "FCN_VOX")
+' $npz("tmp", "NPZ_VOX")
+' $npz("cache", "NPZ_CACHE")
+$cache("cache", "NPZ_CACHE")
+
+' $fcn("wall thickness", "FCN_VOX_WALLTHK")
+' $fcn("accessibility", "FCN_VOX_ACC")
+' $fcn("max turning", "FCN_VOX_MAX_TURN")
+' $fcn("bending", "FCN_VOX_BEND")
+' $fcn("clamping", "FCN_VOX_CLAMP")
+' $fcn("feature reconstruction", "FCN_VOX_FEATS")
+' $fcn("machinability", "FCN_VOX_MACH")
+
+' $npz("tmp", "NPZ_VOX_WALLTHK")
+' $npz("tmp", "NPZ_VOX_ACC")
+' $npz("tmp", "NPZ_VOX_MAX_TURN")
+' $npz("tmp", "NPZ_VOX_BEND")
+' $npz("tmp", "NPZ_VOX_CLAMP")
+' $npz("tmp", "NPZ_VOX_FEATS")
+
+
+' $json("machinability", "JSON_MACH")
+}
+
+
+' ' CONNECTIONS
+' !$stp_rgb = "DarkGoldenRod"
+' ' !$fext_rgb = "Darkorange"
+' !$cache_style = "dashed,#black"
+
+
+' ' ---- machinability
+' STEP_PREPROC -[#$stp_rgb]-> FCN_VOX
+NPZ_CACHE .[$cache_style]> FCN_VOX : "optional"
+' FCN_VOX --> NPZ_VOX
+
+' NPZ_VOX --> FCN_VOX_WALLTHK
+NPZ_CACHE .[$cache_style]> FCN_VOX_WALLTHK : "optional"
+' FCN_VOX_WALLTHK --> NPZ_VOX_WALLTHK
+
+' NPZ_VOX --> FCN_VOX_ACC
+NPZ_CACHE .[$cache_style]> FCN_VOX_ACC : "optional"
+' FCN_VOX_ACC --> NPZ_VOX_ACC
+
+' NPZ_VOX --> FCN_VOX_MAX_TURN
+' JSON_FEXT -[#$fext_rgb]-> FCN_VOX_MAX_TURN
+NPZ_CACHE .[$cache_style]> FCN_VOX_MAX_TURN : "optional"
+' FCN_VOX_MAX_TURN --> NPZ_VOX_MAX_TURN
+
+' NPZ_VOX --> FCN_VOX_BEND
+' STEP_PREPROC -[#$stp_rgb]-> FCN_VOX_BEND
+' JSON_FEXT -[#$fext_rgb]-> FCN_VOX_BEND
+' JSON_OI -[#$oi_rgb]-> FCN_VOX_BEND
+NPZ_CACHE .[$cache_style]> FCN_VOX_BEND : "optional"
+' FCN_VOX_BEND --> NPZ_VOX_BEND
+
+' NPZ_VOX --> FCN_VOX_CLAMP
+' STEP_PREPROC -[#$stp_rgb]-> FCN_VOX_CLAMP
+' JSON_FEXT -[#$fext_rgb]-> FCN_VOX_CLAMP
+' JSON_OI -[#$oi_rgb]-> FCN_VOX_CLAMP
+NPZ_CACHE .[$cache_style]> FCN_VOX_CLAMP : "optional"
+' FCN_VOX_CLAMP --> NPZ_VOX_CLAMP
+
+' NPZ_VOX --> FCN_VOX_FEATS
+' STEP_PREPROC -[#$stp_rgb]-> FCN_VOX_FEATS
+' JSON_FEXT -[#$fext_rgb]-> FCN_VOX_FEATS
+NPZ_CACHE .[$cache_style]> FCN_VOX_FEATS : "optional"
+' FCN_VOX_FEATS --> NPZ_VOX_FEATS
+
+' ' NPZ_VOX --> FCN_VOX_MACH
+' NPZ_VOX_WALLTHK --> FCN_VOX_MACH
+' NPZ_VOX_ACC --> FCN_VOX_MACH
+' NPZ_VOX_MAX_TURN --> FCN_VOX_MACH
+' NPZ_VOX_BEND --> FCN_VOX_MACH
+' NPZ_VOX_CLAMP --> FCN_VOX_MACH
+' NPZ_VOX_FEATS --> FCN_VOX_MACH
+' FCN_VOX_MACH --> JSON_MACH
+FCN_VOX_MACH .[$cache_style]> NPZ_CACHE : "optional"
+
+
+@enduml
