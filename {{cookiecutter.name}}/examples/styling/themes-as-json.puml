@@ -1,6 +1,0 @@
-@startjson
-title https://github.com/bschwarz/puml-themes
-!theme minty
-%get_all_theme()
-' help themes
-@endjson

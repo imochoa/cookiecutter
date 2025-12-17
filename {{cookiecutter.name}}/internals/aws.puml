@@ -1,7 +1,0 @@
-@startuml
-!include <awslib/AWSCommon>
-!include <awslib/Compute/all.puml>
-!include <awslib/general/all.puml>
-
-listsprites
-@enduml
