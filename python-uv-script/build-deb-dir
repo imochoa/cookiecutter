@@ -1,20 +1,21 @@
 #!/usr/bin/env -S uv run --script
-#
+
 # /// script
 # requires-python = ">=3.12"
 # dependencies = [
 #   "sh",
-#   "click",
+#   "typer",
 #   "pdbpp",
 #   ]
 # ///
 
 import logging
 import os
-import click
 from enum import StrEnum
 import pdbpp
+import pathlib
 import sh
+import typer
 from sh import tar, sha256sum, grep
 
 logging.basicConfig(level=logging.INFO)
@@ -22,25 +23,10 @@ logging.basicConfig(level=logging.INFO)
 NUM_CORES = min(4, os.cpu_count())
 
 
-@click.command()
-@click.argument(
-    "path",
-    required=False,
-    type=click.Path(
-        exists=True,
-        file_okay=False,
-        dir_okay=True,
-        readable=True,
-        resolve_path=True,
-    ),
-)
-@click.option("--no-cache", is_flag=True)
-def main(path, no_cache):
-    p = pathlib.Path(path).absolute()
-    click.secho(f"Working with path: {p}", fg="black", bg="blue")
-
+def main(name: str):
+    print(f"Hello {name}")
 
 if __name__ == "__main__":
-    main()
+    main(name="World")
 
 # vim: ft=python
