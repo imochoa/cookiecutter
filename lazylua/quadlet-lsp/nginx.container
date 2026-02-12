@@ -1,0 +1,21 @@
+[Container]
+# ContainerName=meower
+Image=docker.io/nginx:latest
+PublishPort=80:8080
+AutoUpdate=registry
+
+HealthCmd=curl -f http://localhost/ || exit 1
+HealthInterval=30s
+HealthTimeout=5s
+HealthRetries=3
+HealthStartPeriod=5s
+
+[Service]
+Restart=always
+
+[Unit]
+Description=A minimal container
+
+[Install]
+# start on boot
+WantedBy=default.target
